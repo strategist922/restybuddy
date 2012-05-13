@@ -1,1 +1,23 @@
 restybuddy project
+
+restybuddy project is a project focus on backend.
+
+we are want to build an intelligent backend with good performance.
+
+so , that's go!
+
+we use :
+
+openresty, is a good performance of nginx , it include so many modules with nginx. recommend.
+php, is many useful of web application development.
+lua, is a tiny program language.
+
+
+how to do:
+0.download openresty from http://openresty.org ,then install it,second download php,then install it.
+1.install git ,then clone our project code.
+3.start nginx with our configs.
+4.browe this url from webbrowser. if u see "hello world" , then u success.
+
+
+
