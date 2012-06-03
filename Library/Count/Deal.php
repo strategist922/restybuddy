@@ -12,6 +12,7 @@ class Count_Deal {
 		$this->_redis = Sharding_Redis::instance('count');
 	}
 
+	//@TODO CHANGE KEYS FROM KEY.INI
 	public function setQueue()
 	{
 	    $args = func_get_args();

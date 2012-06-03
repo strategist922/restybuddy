@@ -1,25 +1,20 @@
 <?php
 /**
- * Mysqli简单高性能高稳定性的数据访问类
- * 开发中和线上必须配置mysqli的扩展
- * 获取大量数据的测试代码：
+ * Mysqli simple db class
  * 
  * $sql = 'select * from sz_account limit 1';
  * $sqllarge = 'select * from sz_stream';
  * $db = Base::instance('Mysqlidb');
  * $result = $db->fetchRow($sql);
- * //查询超大对象，获取连接对象，进行查询
+ * //use to query big data
  * $db->connect()->real_query($sqllarge);
- * //获取查询结果
  * $result2 = $db->connect()->use_result();
- * //循环输出结果
  * while($row = $result2->fetch_row()){
  *     var_dump($row);
  * }
  * echo "-------<br />";
  * var_dump($result);
  * 
- * 查询小量但是不想从db返回后在做二次循环时候用这个
  * if ($db->query($sqlproduct)) {
  *    while ($arrRow = mysqli_fetch_assoc($db->getQuery())) {
  *        var_dump($arrRow);
@@ -30,73 +25,73 @@
 class Sharding_Mysqli {
 
     /**
-     * DB配置节点
+     * db config
      * @var array
      */
     protected $_arrConfig = null;
 
     /**
-     * 是否自动释放
+     * auto free
      * @var bool
      */
     protected $_bolAutoFree = false;
 
     /**
-     * 是否使用持续链接
+     * use pconnect
      * @var bool
      */
     protected $_bolPconnect = false;
 
     /**
-     * 事务次数
+     * transtimes
      * @var integer
      */
     protected $_intTransTimes = 0;
 
     /**
-     * 查询语句
+     * query
      * @var string
      */
     protected $_strQueryStr = '';
 
     /**
-     * 最后自增ID
+     * auto ins id
      * @var integer
      */
     protected $_intLastInsID = null;
 
     /**
-     * 影响行数
+     * row number
      * @var integer
      */
     protected $_intNumRows = 0;
 
     /**
-     * 当前的链接对象
+     * linkid
      * @var mysqli
      */
     protected $_objLinkID = null;
 
     /**
-     * 当前查询的对象
+     * query object
      * @var object
      */
     protected $_objQueryID = null;
 
     /**
-     * 是否使用主库
+     * use master
      * @var bool
      */
     protected $_bolIsMaster = false;
 
     /**
-     * 当前是否需要连接到主库
+     * is master
      * @var bool
      */
     protected $_bolMaster = false;
 
     /**
-     * 标记是否成功
+     * is connected
      * @var bool
      */
     protected $_bolConnected = false;
@@ -114,14 +109,12 @@ class Sharding_Mysqli {
     }
 
     /**
-     * 构造函数
-     * 获取配置信息传入，构造DB对象
+     * construct
      */
     private function __construct($arrConfig) {
         if (!extension_loaded('mysqli')) {
             throw new Exception('MYSQLI EXTENSTION NOT LOADED!');
         }
-        //加载配置
         if (!empty($arrConfig)) {
 		$this->_arrConfig = $arrConfig;
         } else {
@@ -130,19 +123,19 @@ class Sharding_Mysqli {
     }
 
     /**
-     * 获取配置
-     * @param bool $bolMaster 是否使用主库
-     * @param int $intRetry  重试的配置获取 
+     * get config
+     * @param bool $bolMaster is master
+     * @param int $intRetry  retry 
      * @return array  
      */
     private function _get_db_config($bolMaster, $intRetry = 0) {
         if ($bolMaster) {
             return $this->_arrConfig['master'];
         } else {
-            //如果不是连接在主库上的话，就通过从库来读
+            //read from slaves
             switch ($intRetry) {
 		case 0:
-		     //多个slave 用逗号隔开
+		     //slaves split by ,
                      if(!empty($this->_arrConfig['slave']['host']) && is_int(strpos($this->_arrConfig['slave']['host'],','))) {
 			  $expand = explode(',',$this->_arrConfig['slave']['host']);
 			  $this->_arrConfig['slave']['host'] = array_rand($expand);
@@ -160,18 +153,16 @@ class Sharding_Mysqli {
     
 
     /**
-     * 连接数据库获取实例
-     * 根据传入的linkNum来实现db的切换
-     * 连接到DB SERVER的配置
+     * connect setting
+     * 
      */
     public function connect() {
         if ($this->_objLinkID && $this->_bolIsMaster == false && $this->_bolMaster == true) {
-            //已连接到slave但需要连接到master，则断开已有连接
+            //if connected slave,but need to execute a insert/update then disconnect slave then connect to master
             $this->close();
         }
 
         if (!isset($this->_objLinkID)) {
-            //创建连接
             $connect_success = false;
             for ($i = 0; $i < 3; $i++) {
                 $arrConfig = $this->_get_db_config($this->_bolMaster, $i);
@@ -199,20 +190,16 @@ class Sharding_Mysqli {
     
 
     /**
-     * 查询SQL语句返回结果
-     * @param string $str sql语句
-     * @return array  查询结果
+     * query return result
+     * @param string $str sql
+     * @return array  
      */
     public function query($strSql) {
-
-        //连接数据库
         $this->connect();
         $this->_strQueryStr = $strSql;
-        //释放上次的查询
         $this->free();
         $this->_objQueryID = mysqli_query($this->_objLinkID, $this->_strQueryStr);
         if (!$this->_objQueryID) {
-            //查询失败则抛出异常
             throw new Exception(
                     "QUERY ERROR:" . $this->_objLinkID->error . " SQL:" . $strSql);
             return false;
@@ -223,7 +210,7 @@ class Sharding_Mysqli {
     }
 
     /**
-     * 获取query后的查询结果
+     * get query result
      *
      */
     public function fetch() {
@@ -231,11 +218,11 @@ class Sharding_Mysqli {
     }
 
     /**
-     * 查询返回单条记录
+     * return one row
      *
      * $db->fetchRow($strSql);
-     * @param string $strSql SQL语句
-     * @return array/empty array 返回当条数据或者是空数组
+     * @param string $strSql SQL
+     * @return array/empty array 
      */
     public function fetchRow($strSql) {
         if ($this->query($strSql)) {
@@ -245,11 +232,11 @@ class Sharding_Mysqli {
     }
 
     /**
-     * 查询返回一列的全部记录，例如SELECT field FROM table WHERE id = 3;
+     * return column，examples:SELECT field FROM table WHERE id = 3;
      *
      * $db->fetchColumn($strSql);
-     * @param string $strSql SQL语句
-     * @return array/empty array 返回当条数据或者是空数组
+     * @param string $strSql SQL
+     * @return array/empty array 
      */
     public function fetchColumn($strSql) {
         $arrColumn = array();
@@ -264,7 +251,7 @@ class Sharding_Mysqli {
 
     /**
      *
-     * 查询返回第一个记录的第一个字段的值，例如SELECT field FROM table WHERE id = 12;
+     * fetch one,examples:SELECT field FROM table WHERE id = 12;
      *
      * $db->fetchOne($strSql);
      * @param string $strSql
@@ -280,7 +267,7 @@ class Sharding_Mysqli {
 
     /**
      *
-     * 查询全部行，例如SELECT * FROM table WHERE id > 3;
+     * query，example:SELECT * FROM table WHERE id > 3;
      *
      * $db->fetchAll($strSql);
      * @param string $strSql
@@ -294,12 +281,12 @@ class Sharding_Mysqli {
     }
 
     /**
-     * 执行SQL语句
-     * @param string $str sql语句
-     * @return int  返回execute影响的行数
+     * execute ,connect to master
+     * @param string $str sql
+     * @return int  execute numbers
      */
     public function execute($strSql) {
-        //连接到主库
+        //connect to master
         $this->_bolMaster = true;
         $this->connect();
         $this->_strQueryStr = $strSql;
@@ -319,8 +306,7 @@ class Sharding_Mysqli {
     }
 
     /**
-     * 插入数据库
-     * @TODO: 需要处理下table的前缀问题
+     * insert into table
      * @param type $strTable
      * @param type $arrBind
      * @return type 
@@ -343,10 +329,10 @@ class Sharding_Mysqli {
     }
 
     /**
-     * 更新操作
-     * @param type $strTable 表名
-     * @param type $arrBind 待绑定的数组
-     * @param type $strWhere 查询条件
+     * do update
+     * @param type $strTable table name
+     * @param type $arrBind bind array
+     * @param type $strWhere where
      * @return type 
      */
     public function update($strTable, $arrBind, $strWhere) {
@@ -367,7 +353,7 @@ class Sharding_Mysqli {
     }
 
     /**
-     * 开始事务
+     * begin transaction
      * @return null
      */
     public function beginTransaction() {
@@ -381,7 +367,7 @@ class Sharding_Mysqli {
     }
 
     /**
-     * 提交
+     * commit
      * @return bool true/false
      */
     public function commit() {
@@ -390,8 +376,8 @@ class Sharding_Mysqli {
     }
 
     /**
-     * 回滚
-     * @return bool 结果
+     * rollback
+     * @return bool 
      */
     public function rollBack() {
         $result = mysqli_query($this->_objLinkID, 'ROLLBACK');
@@ -399,7 +385,7 @@ class Sharding_Mysqli {
     }
 
     /**
-     * 释放最近一次查询结果
+     * free last query result
      */
     public function free() {
         if (!empty($this->_objQueryID)) {
@@ -409,7 +395,7 @@ class Sharding_Mysqli {
     }
 
     /**
-     * 回收资源
+     * free resource
      */
     public function close() {
         if (!empty($this->_objQueryID)) {
@@ -431,7 +417,7 @@ class Sharding_Mysqli {
     }
 
     /**
-     * 获取最后一条查询的SQL
+     * get last query sql, help debug
      * @return string
      */
     public function getLastSql() {

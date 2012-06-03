@@ -29,7 +29,7 @@ class Common_Time {
 
 	
 	/**
-	 * show friend time
+	 * show friend time,for chinese
 	 * @param $datetime time
 	 * @return string friend time show
 	 */

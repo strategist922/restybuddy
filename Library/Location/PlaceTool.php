@@ -1,19 +1,19 @@
 <?php
 class Location_PlaceTool {
-  var $latitude_scale; 	//纬度方向的刻度,double
-  var $longitude_scale; 	//经度方向的刻度,double
-  var $real_size; 		//一度多高,double
-  var $real_scale; 		//格子的高度，米,double
+  var $latitude_scale; 	//double
+  var $longitude_scale; 	//double
+  var $real_size; 		//double
+  var $real_scale; 		//double meter
 
   public function __construct() { 
-    $this->latitude_scale = 0.006; //纬度方向的刻度,double
-    $this->longitude_scale = 0.006; //经度方向的刻度,double
-    $this->real_size = 39250000/360; //一度多高,double
-    $this->real_scale = 39250000 * $this->longitude_scale /360; //格子的高度，米,double
+    $this->latitude_scale = 0.006; //double
+    $this->longitude_scale = 0.006; //double
+    $this->real_size = 39250000/360; //double
+    $this->real_scale = 39250000 * $this->longitude_scale /360; //double
   } 
 
   /**
-   * 计算两个经纬度的距离平方
+   * calDistanceSquare 
    * @param lat1
    * @param lon1
    * @param lat2
@@ -26,7 +26,7 @@ class Location_PlaceTool {
   }
 
   /**
-   * 计算两个经纬度的距离平方,不用每次算经度上的刻度
+   * get DistanceSquare With Size
    * @param lat1
    * @param lon1
    * @param lat2
@@ -40,7 +40,7 @@ class Location_PlaceTool {
     return $lat*$lat + $lon*$lon;
   }	
   /**
-   * 把纬度转换为0-180，南极为0
+   * change latitude to 0-180，southest  is 0
    * @param latitude
    * @return
    */
@@ -50,7 +50,7 @@ class Location_PlaceTool {
   }
 
   /**
-   * 经度转换为0-360，西经是180-360
+   * change longitude 0-360，westlongitude 180-360
    * @param longitude
    * @return
    */
@@ -60,9 +60,9 @@ class Location_PlaceTool {
   }	
 
   /**
-   * 计算指定经度和纬度所属格子的索引
-   * @param latitude 纬度
-   * @param longitude 经度
+   * calIndexByLatLon
+   * @param latitude 
+   * @param longitude
    * @return
    */
   public function  calIndexByLatLon($latitude, $longitude){
@@ -75,8 +75,8 @@ class Location_PlaceTool {
   }
 
   public function  calIndexByLatLonSmall($latitude, $longitude){
-    $this->latitude_scale = 0.001; //纬度方向的刻度,double
-    $this->longitude_scale = 0.001; //经度方向的刻度,double	
+    $this->latitude_scale = 0.001; //double
+    $this->longitude_scale = 0.001; //double	
     $longitude = $this->convertLon($longitude);
     $latitude = $this->convertLat($latitude); 
     $lat = (int)($latitude/$this->latitude_scale);
@@ -88,8 +88,8 @@ class Location_PlaceTool {
 
 
   /**
-   * 计算指定纬度下，单位纬度宽度
-   * @param latitude 纬度
+   * calLandscapeSize
+   * @param latitude 
    * @return
    */
   public function  calLandscapeSize($latitude){
@@ -97,8 +97,8 @@ class Location_PlaceTool {
     return (double) $this->real_size * cos($latitude/180*PI());
   }	
   /**
-   * 计算指定纬度下，格子在经度方向的宽度
-   * @param latitude 纬度
+   * calLandscapeScale
+   * @param latitude 
    * @return
    */
   public  function  calLandscapeScale($latitude){
@@ -106,11 +106,11 @@ class Location_PlaceTool {
     return (double) $this->real_scale * cos($latitude/180*PI());
   }
   /**
-   * 计算指定的范围跨越了哪些方块
+   * calculate cross block numbers
    * @param latitude
    * @param longitude
    * @param radius
-   * @return 方块索引列表
+   * @return blockindex
    */
   public function findIndex($latitude, $longitude, $radius){
     $lat_offset = (double)$radius/$this->real_scale;
@@ -135,8 +135,8 @@ class Location_PlaceTool {
   }
 
   public function findIndexSmall($latitude, $longitude, $radius){
-    $this->latitude_scale = 0.001; //纬度方向的刻度,double
-    $this->longitude_scale = 0.001; //经度方向的刻度,double
+    $this->latitude_scale = 0.001; //double
+    $this->longitude_scale = 0.001; //double
     $lat_offset = (double)$radius/$this->real_scale;
     $lon_offset = (double)$radius/$this->calLandscapeScale($latitude);
     $lat = (double)$this->convertLat($latitude)/$this->latitude_scale;

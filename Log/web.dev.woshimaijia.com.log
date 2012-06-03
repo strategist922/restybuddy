@@ -1,0 +1,8 @@
+192.168.56.1 - - [16/May/2012:16:31:13 +0800] GET /login/weibo HTTP/1.1 404 27 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5 -
+192.168.56.1 - - [16/May/2012:16:31:13 +0800] GET /favicon.ico HTTP/1.1 404 27 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5 -
+192.168.56.1 - - [17/May/2012:18:34:20 +0800] GET / HTTP/1.1 404 27 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5 -
+192.168.56.1 - - [23/May/2012:00:10:15 +0800] GET / HTTP/1.1 200 33 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5 -
+192.168.56.1 - - [23/May/2012:00:10:17 +0800] GET /favicon.ico HTTP/1.1 500 5 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5 -
+192.168.56.1 - - [23/May/2012:00:13:56 +0800] GET / HTTP/1.1 200 33 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5 -
+192.168.56.1 - - [23/May/2012:00:13:57 +0800] GET /favicon.ico HTTP/1.1 500 5 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5 -
+192.168.56.1 - - [25/May/2012:19:36:04 +0800] GET / HTTP/1.1 500 5 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5 -

@@ -3,38 +3,42 @@ require_once "PHPUnit/Framework/TestSuite.php";
 
 
 class TestNow extends PHPUnit_Framework_TestSuite {
- 
-   public function __construct()
-   {
-	
-	require_once dirname(dirname(dirname(__FILE__)))."/Env/env.inc.php";
-        define("APP_PATH", ROOT_PATH."/Presentation/Api");	
-	define("RUN_MODE",'dev');
 
-	define("ROOT_URL",'http://s.dianxing.cn');
-	
-        //初始化AP程序
-	$application = new Yaf_Application(CONF_PATH . DIRECTORY_SEPARATOR. RUN_MODE. DIRECTORY_SEPARATOR . "application.ini");
-	
-	//应用程序初始化
-	$application->bootstrap();
-   	
-	
-	//require_once dirname(__FILE__).'/Library/BusinessNearplaceTest.php';	
-	require_once dirname(__FILE__).'/Library/TimeTest.php';
-	require_once dirname(__FILE__).'/Service/UserviewTest.php';
-	$this->setName('Test Suite');
-	
+  public function __construct()
+  {
+  	define("RUN_MODE",'dev');
+  	define("APP_PATH", dirname(dirname(dirname(__FILE__)))."/Presentation/Api");
+  	require_once dirname(dirname(dirname(__FILE__)))."/Env/env.inc.php";
+  	define("ROOT_URL",'http://api.dev.woshimaijia.com');
+    $application = new Yaf_Application(CONF_PATH . "/application.ini");
+    $application->bootstrap();
 
-	//$this->addTestSuite('BusinessNearplaceTest');
-	//$this->addTestSuite('TimeTest');
-	$this->addTestSuite('UserviewTest');
-   }
+    require_once dirname(__FILE__).'/Service/IdTest.php';	
+    require_once dirname(__FILE__).'/Library/VenderTest.php';
+    require_once dirname(__FILE__).'/Library/ScwsTest.php';
+    require_once dirname(__FILE__).'/Service/AdTest.php';
+    require_once dirname(__FILE__).'/Library/RemindTest.php';
+    require_once dirname(__FILE__).'/Library/TagsTest.php';
+    
+    //require_once dirname(__FILE__).'/Service/UserviewTest.php';
+    
+    $this->setName('Test Suite');
 
-   public static function suite() {
-	return new self();
-   }
 
-	   
+    //$this->addTestSuite('BusinessNearplaceTest');
+    //$this->addTestSuite('TimeTest');
+    //$this->addTestSuite('VenderTest');
+    //$this->addTestSuite('ScwsTest');
+    //$this->addTestSuite('AdTest');
+    //$this->addTestSuite('RemindTest');
+    $this->addTestSuite('TagsTest');
+    
+  }
+
+  public static function suite() {
+    return new self();
+  }
+
+
 
 }

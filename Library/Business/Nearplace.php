@@ -1,6 +1,6 @@
 <?php
 /**
-* 获取周边的商家
+* near places
 */
 class Business_Nearplace
 {
@@ -28,13 +28,13 @@ class Business_Nearplace
 
 	}
 
-	//获取附近的BlockID
+	//get near blocks
 	public function getNearBlockID()
 	{
 		return $this->_blockIDs;	
 	}
 	
-	//获取当个Block的数据
+	//get places
 	public function getPlaceByBlockID($field='id')
 	{
 		//blockIndex  ==>  placeIDs   
@@ -44,7 +44,7 @@ class Business_Nearplace
 		return $this->_mysql->fetchColumn($sql);   	
 	}
 
-	//获取所有的Place
+	//get all place
 	public function getAllPlaces($field='id')
 	{
 		if(!empty($this->_blockIDs)) {
