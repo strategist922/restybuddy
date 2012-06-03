@@ -1012,3 +1012,7 @@ Stack trace:
 #0 /source/restybuddy/Presentation/Api/index_dev.php(10): Yaf_Application->run()
 #1 {main}
   thrown in /source/restybuddy/Presentation/Api/index_dev.php on line 10
+[03-Jun-2012 17:59:01 UTC] PHP Warning:  chmod(): No such file or directory in /Wsmjdev/try/API/Tasks/RemoveLargeLogs.php on line 30
+[03-Jun-2012 20:13:18 UTC] PHP Warning:  Yaf_Loader::autoload(): You should not use 'Yaf_' as class name prefix in /source/restybuddy/Presentation/Api/application/controllers/Update.php on line 3
+[03-Jun-2012 20:13:18 UTC] PHP Warning:  Yaf_Loader::autoload(): Could not find script /source/restybuddy/Library/Yaf/abstract/controller.php in /source/restybuddy/Presentation/Api/application/controllers/Update.php on line 3
+[03-Jun-2012 20:13:18 UTC] PHP Fatal error:  Class 'Yaf_abstract_controller' not found in /source/restybuddy/Presentation/Api/application/controllers/Update.php on line 3
