@@ -1,0 +1,6 @@
+192.168.56.1 - - [16/Jun/2012:12:44:57 +0800] GET / HTTP/1.1 200 45 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.54 Safari/536.5 -
+192.168.56.1 - - [16/Jun/2012:12:44:57 +0800] GET /favicon.ico HTTP/1.1 500 5 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.54 Safari/536.5 -
+192.168.56.1 - - [16/Jun/2012:12:56:08 +0800] GET / HTTP/1.1 200 45 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.54 Safari/536.5 -
+192.168.56.1 - - [16/Jun/2012:12:56:08 +0800] GET /favicon.ico HTTP/1.1 500 5 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.54 Safari/536.5 -
+192.168.56.1 - - [16/Jun/2012:12:58:14 +0800] GET / HTTP/1.1 200 45 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.54 Safari/536.5 -
+192.168.56.1 - - [16/Jun/2012:12:58:15 +0800] GET /favicon.ico HTTP/1.1 500 5 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.54 Safari/536.5 -
