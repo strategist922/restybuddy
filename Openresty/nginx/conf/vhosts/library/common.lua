@@ -1,6 +1,0 @@
-ngx.say("hello nginx");
-
-
-
-
-

@@ -1,6 +1,0 @@
-location / {
-    content_by_lua '
-      ngx.say("restytest aaa");
-    ';
-
-}
