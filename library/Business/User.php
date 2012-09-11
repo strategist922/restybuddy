@@ -4,7 +4,7 @@ class Business_User {
 
 	protected $_params;
 	protected $_redis;
-	protected $_fields;
+	protected $_fields = array('uid'=>'','email'=>'','screenname'=>'','icon'=>'','domain'=>'','sign'=>'');
 
 	public function __construct($params)
 	{
@@ -33,20 +33,25 @@ class Business_User {
 		}
 		return false;
 	}
-
+	
+	//set a new user 
+	//fields: email,screenname,password,domain
 	public function setUser()
 	{
 		if(!$this->existUser()) {
 			$this->_params['password']= md5($this->_params['password']);
 			//add more field
-			$this->_params['remark'] = '';
 			$this->_params['domain'] = '';
-				
-			$this->_params['id'] = objid();
-			$r = Sharding_Redis::objectSet(K('user.user'), $this->_params,$this->_params['id']);
+			$this->_params['uid'] = objid();
+			foreach ($this->_fields as $key=>$val){
+				if(!isset($this->_params[$key])){
+					$this->_params[$key] = '';
+				}
+			}
+			$r = Sharding_Redis::objectSet(K('user.user'), $this->_params,$this->_params['uid']);
 			if($r) {
 				$eventkey = K('event.user');
-				Sharding_Redis::objectSet($eventkey, $this->_params['id']);
+				Sharding_Redis::objectSet($eventkey, $this->_params['uid']);
 				$this->existUser(true);
 				return true;
 			}
@@ -57,9 +62,8 @@ class Business_User {
 
 	public function getUser()
 	{
-		//@todo add more field to display
-		$field = array('id','email','screenname');
-		return $this->_redis->hmGet(K('user.user').':'.$this->_params['id'],$field);
+		$fields = array('uid','email','screenname','icon','domain','sign');
+		return $this->_redis->hmGet(K('user.user').':'.$this->_params['uid'],$fields);
 	}
 
 	public function domainUser()
@@ -67,7 +71,7 @@ class Business_User {
 		$domain = $this->_params['domain'];
 		$id = $this->_redis->get(K('user.domain').':'.$domain);
 		if(intval($id)){
-			$this->_params['id'] = $id;
+			$this->_params['uid'] = $id;
 			return $this->getUser();
 		}
 		return false;
@@ -82,26 +86,54 @@ class Business_User {
 
 	public function infoUser()
 	{
-		$this->_fields = array('email','screenname');
-
+		$fields = array('uid','email','screenname','icon','domain','sign');
+		return $this->_redis->hmGet(K('user.user').':'.$this->_params['uid'],$fields);
 	}
-
+	
 	public function uploadUser()
 	{
-
+		$u = new Common_Upload();
+		$data = $u->upload();
+		if($data !== false) {
+			return $this->_redis->hmset(K('user.user').':'.$this->_params['uid'],array('icon'=>$data));
+		}
+		return false;
 	}
-
+	
+	public function setdomainUser()
+	{
+		$domain = $this->_params['domain'];
+		if($this->existDomain($domain)) {
+			$uid = $this->_params['uid'];
+			if($this->_redis->hmSet(K('user.user').':'.$uid,array('domain'=>$domain))) {
+					$this->_redis->set(K('user.domain').':'.$domain,$uid);
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	private function existDomain($domain)
+	{
+		if($this->_redis->get(K('user.domain').':'.$domain)) {
+			return false;
+		}
+		return true;
+	}
+	
 	public function remarkUser()
 	{
-		//
-		
+		$uid = $this->_params['uid'];
+		$id = $this->_params['id'];
+		$remark = $this->_params['remark'];
+		return $this->_redis->set(K('user.remark').$uid.':'.$id,$remark);
 	}
 
 	public function signUser()
 	{
 		$sign = $this->_params['sign'];
 		$uid = $this->_params['uid'];
-		return $this->_redis->hmSet(K('user.user').':'.$uid,'sign',$sign);
+		return $this->_redis->hmSet(K('user.user').':'.$uid,array('sign'=>$sign));
 	}
 	
 }

@@ -166,9 +166,9 @@ function getFileContentToArray($file)
 function file_get_html($url, $use_include_path = false, $context=null, $offset = -1, $maxLen=-1, $lowercase = true, $forceTagsClosed=true, $target_charset = 'UTF-8', $stripRN=true, $defaultBRText="\r\n")
 {
 	// We DO force the tags to be terminated.
-	$dom = new Crawler_Simplehtmldom(null, $lowercase, $forceTagsClosed, $target_charset, $defaultBRText);
+	$dom = new Crawler_Simplehtmldom(null, $lowercase, $forceTagsClosed, $target_charset,$stripRN, $defaultBRText);
 	// For sourceforge users: uncomment the next line and comment the retreive_url_contents line 2 lines down if it is not already done.
-	$contents = file_get_contents($url, $use_include_path, $context, $offset);
+	$contents = file_get_contents("$url", $use_include_path, $context, $offset);
 	// Paperg - use our own mechanism for getting the contents as we want to control the timeout.
 	//    $contents = retrieve_url_contents($url);
 	if (empty($contents))
@@ -183,7 +183,7 @@ function file_get_html($url, $use_include_path = false, $context=null, $offset =
 // get html dom from string
 function str_get_html($str, $lowercase=true, $forceTagsClosed=true, $target_charset = "UTF-8", $stripRN=true, $defaultBRText="\r\n")
 {
-	$dom = new Crawler_Simplehtmldom(null, $lowercase, $forceTagsClosed, $target_charset, $defaultBRText);
+	$dom = new Crawler_Simplehtmldom(null, $lowercase, $forceTagsClosed, $target_charset, $stripRN,$defaultBRText);
 	if (empty($str))
 	{
 		$dom->clear();
@@ -371,5 +371,9 @@ function addParamToUrl($strUrl, $arrParamsToAdd = array()) {
 	(isset($arrUrlParse["query"]) ? "?" . $arrUrlParse["query"] : "") .
 	(isset($arrUrlParse["fragment"]) ? "#" . $arrUrlParse["fragment"] : "");
 	return $url;
+}
+
+function throw_exception($msg, $type = 'Exception', $code = 888) {
+	throw new Exception($msg, $code);
 }
 

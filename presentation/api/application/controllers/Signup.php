@@ -5,7 +5,7 @@ class SignupController extends Yaf_Controller_abstract {
 	private $_info = '';
 	private $_data = '';
 	
-	public function indexAction()
+	public function signupAction()
 	{
 		if(!empty($_POST['email']) && !empty($_POST['screenname']) && !empty($_POST['password'])){
 			$this->_code = Common_Errorcode::SUCCESS;

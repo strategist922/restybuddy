@@ -10,7 +10,7 @@ class AdController extends Yaf_Controller_abstract{
 		//param validate then do act
 		if(!empty($_POST)){
 			$this->_code = Common_Errorcode::SUCCESS;
-			$this->_data = Q("Service_Ad",$_POST,'update');
+			$this->_data = Q("Business_Ad",$_POST,'update');
 		}
 		jsonReturn($this->_code,$this->_data);
 	}
@@ -19,7 +19,7 @@ class AdController extends Yaf_Controller_abstract{
 	{
 		if(!empty($_POST)){
 			$this->_code = Common_Errorcode::SUCCESS;
-			$this->_data = Q("Service_Ad",$_POST,'destroy');
+			$this->_data = Q("Business_Ad",$_POST,'destroy');
 		}
 		jsonReturn($this->_code,$this->_data);
 	}
@@ -28,7 +28,7 @@ class AdController extends Yaf_Controller_abstract{
 	{
 		if(!empty($_POST)){
 			$this->_code = Common_Errorcode::SUCCESS;
-			$this->_data = Q("Service_Ad",$_POST,'show');
+			$this->_data = Q("Business_Ad",$_POST,'show');
 		}
 		jsonReturn($this->_code,$this->_data);
 	}
@@ -37,7 +37,7 @@ class AdController extends Yaf_Controller_abstract{
 	{
 		if(!empty($_POST)){
 			$this->_code = Common_Errorcode::SUCCESS;
-			$this->_data = Q("Service_Ad",$_POST,'getlist');
+			$this->_data = Q("Business_Ad",$_POST,'getlist');
 		}
 		jsonReturn($this->_code,$this->_data);
 	}

@@ -95,8 +95,11 @@ class Common_Upload {
 					if(!$this->check($file))
 						return false;
 				}
+				
+				
 				$updFile = $this->save($file);
-				error_log("updfile:".$updFile);
+				
+				logTrace(__CLASS__.'/'.__METHOD__.':'."updfile:".$updFile);
 				if(!$updFile) return false;
 
 				unset($file['tmp_name'],$file['error']);
@@ -154,7 +157,7 @@ class Common_Upload {
 		}
 		
 		$filename = $file['savepath'].'/'.$type.'/'.$id.'.'.$file['extension'];
-		error_log("file:".$filename);
+		logTrace("file:".$filename);
 
 		if( in_array(strtolower($file['extension']),array('gif','jpg','jpeg','bmp','png','swf')) && false === getimagesize($file['tmp_name'])) {
 			$this->error = 'image error';

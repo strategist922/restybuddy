@@ -7,7 +7,7 @@ class UserController extends Yaf_Controller_abstract {
 
 	public function showAction()
 	{
-		if(!empty($_GET['id'])){
+		if(!empty($_GET['uid'])){
 			$this->_code = Common_Errorcode::SUCCESS;
 			$this->_data = Q('Business_User',$_GET,'getUser');
 		}
@@ -26,7 +26,7 @@ class UserController extends Yaf_Controller_abstract {
 
 	public function countsAction()
 	{
-		if(!empty($_GET['id'])){
+		if(!empty($_GET['uid'])){
 			$this->_code = Common_Errorcode::SUCCESS;
 			$this->_data = Q('Business_User',$_GET,'countsUser');
 		}
@@ -46,7 +46,7 @@ class UserController extends Yaf_Controller_abstract {
 	{
 		if(!empty($_POST['uid'])){
 			$this->_code = Common_Errorcode::SUCCESS;
-			$this->_data = Q('Business_User',$_GET,'uploadUser');
+			$this->_data = Q('Business_User',$_POST,'uploadUser');
 		}
 		jsonReturn($this->_code,$this->_data);
 	}
@@ -55,7 +55,7 @@ class UserController extends Yaf_Controller_abstract {
 	{
 		if(!empty($_POST['id']) && !empty($_POST['remark']) && !empty($_POST['uid'])){
 			$this->_code = Common_Errorcode::SUCCESS;
-			$this->_data = Q('Business_User',$_GET,'remarkUser');
+			$this->_data = Q('Business_User',$_POST,'remarkUser');
 		}
 		jsonReturn($this->_code,$this->_data);
 	}
@@ -64,8 +64,19 @@ class UserController extends Yaf_Controller_abstract {
 	{
 		if(!empty($_POST['uid']) && !empty($_POST['sign'])){
 			$this->_code = Common_Errorcode::SUCCESS;
-			$this->_data = Q('Business_User',$_GET,'signUser');
+			$this->_data = Q('Business_User',$_POST,'signUser');
 		}
 		jsonReturn($this->_code,$this->_data);
 	}
+	
+	
+	public function setdomainAction()
+	{
+		if(!empty($_POST['uid']) && !empty($_POST['domain'])){
+			$this->_code = Common_Errorcode::SUCCESS;
+			$this->_data = Q('Business_User',$_POST,'setdomainUser');
+		}
+		jsonReturn($this->_code,$this->_data);
+	}
+	
 }

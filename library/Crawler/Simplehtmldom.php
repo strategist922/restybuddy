@@ -736,7 +736,7 @@ class Crawler_Simplehtmldom {
     protected $token_attr = ' >';
     protected $_charset = '';
     protected $_target_charset = '';
-    protected $default_br_text = "";
+    protected $default_br_text = "\r\n";
 
     // use isset instead of in_array, performance boost about 30%...
     protected $self_closing_tags = array('img'=>1, 'br'=>1, 'input'=>1, 'meta'=>1, 'link'=>1, 'hr'=>1, 'base'=>1, 'embed'=>1, 'spacer'=>1);
@@ -775,7 +775,7 @@ class Crawler_Simplehtmldom {
     }
 
     // load html from string
-    function load($str, $lowercase=true, $stripRN=true, $defaultBRText=DEFAULT_BR_TEXT) {
+    function load($str, $lowercase=true, $stripRN=true, $defaultBRText="\r\n") {
         global $debugObject;
 
         // prepare
@@ -857,7 +857,7 @@ class Crawler_Simplehtmldom {
     }
 
     // prepare HTML data and init everything
-    protected function prepare($str, $lowercase=true, $stripRN=true, $defaultBRText=DEFAULT_BR_TEXT) {
+    protected function prepare($str, $lowercase=true, $stripRN=true, $defaultBRText="\r\n") {
         $this->clear();
 
         // set the length of content before we do anything to it.

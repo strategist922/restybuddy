@@ -26,7 +26,7 @@ class Template_Think {
      * construct
      */
     public function __construct(){
-        $this->config['cache_path']        =  TEMP_PATH.DIRECTORY_SEPARATOR;
+        $this->config['cache_path']        =  TEMP_PATH.'/';
         $this->config['template_suffix']   =  '.html';
         $this->config['cache_suffix']       =  '.php';
         $this->config['tmpl_cache']        =  true;
@@ -119,9 +119,11 @@ class Template_Think {
     {
         if(!empty($templateVar))   $this->assign($templateVar);
         $tmplCacheFile = $this->config['cache_path'].md5($templateFile).$this->config['cache_suffix'];
-        if (!$this->checkCache($templateFile,$tmplCacheFile))
+        if (!$this->checkCache($templateFile,$tmplCacheFile)){
             $this->loadTemplate($templateFile,$tmplCacheFile);
+        }
         extract($this->var, EXTR_OVERWRITE);
+        //var_dump($tmplCacheFile);
         include $tmplCacheFile;
     }
     /**
@@ -170,7 +172,7 @@ class Template_Think {
         $this->templateFile = $templateFile;
         $tmplContent = $this->parseTag($tmplContent);
         $tmplContent = preg_replace('/<!--###literal(\d)###-->/eis',"\$this->restoreLiteral('\\1')",$tmplContent);
-        $tmplContent  =  '<?php if (!defined(\'BUDDY_PATH\')) exit();?>'.$tmplContent;
+        
         return trim($tmplContent);
     }
 

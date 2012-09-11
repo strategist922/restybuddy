@@ -1,7 +1,6 @@
 <?php
 /**
- * query maker
- * use mysql se to query result
+ * sphinx search query
  * $search = new Search_Query();
  * $search->setField('')->setDatabase()->setQuery()->setIndex('main,main_delta')->setMatchMode()->setRankingMode()->setFieldWeight()->setFilter()->setSort()->setLimit();
  * $result = $search->fetchAll();
@@ -24,7 +23,7 @@ class Search_Query {
 	}
 
 	/**
-	 * set filed ,filter is ,
+	 * 多个索引用逗号隔开
 	 */
 	public function setField($field='*')
 	{
@@ -36,11 +35,9 @@ class Search_Query {
 		$this->_sql .= $database . " WHERE ";
 	}
 
-	/**
-	 * deal query word
-	 */
 	public function setQuery($query)
 	{
+		$query = $this->doSaveFilt($query);
 		$query = $this->_mysql->escape($query);
 		$this->_sql .= "query='$query;";
 	}
@@ -60,9 +57,9 @@ class Search_Query {
 		}
 	}
 
-	public function setMatches($count=1000)
+	public function setMatches($count=100)
 	{
-		$count =  (!is_int($count) || $count <0 ) ? $count = 1000 : $count;
+		$count =  (!is_int($count) || $count <0 ) ? $count = 100 : $count;
 		$this->_sql .= "maxmatches=$count;offset=0;limit=$count;";
 		 
 	}
@@ -122,13 +119,13 @@ class Search_Query {
 
 	public function fetchAll()
 	{
-		//error_log($this->_sql."\n");
+		logTrace(__CLASS__.':'.$this->_sql."\n");
 		return $this->_mysql->fetchAll($this->_sql);
 	}
 
 	public function fetchColumn()
 	{
-		//error_log($this->_sql."\n");
+		logTrace(__CLASS__.':'.$this->_sql."\n");
 		return $this->_mysql->fetchColumn($this->_sql);
 	}
 
@@ -138,5 +135,25 @@ class Search_Query {
 		return $this->_sql;
 	}
 
+
+	public function doSaveFilt($query)
+	{
+		$query = sbcToDbc($query);
+		$query = str_replace('/',' ',$query);
+		$query = str_replace(',',' ',$query);
+		$query = str_replace(';',' ',$query);
+		return $query;
+	}
+
+
+
+	//@update the indexer db
+	public function getIndexerDb()
+	{
+		$searchd = C('search.searchd');
+		$arr = explode(',', $searchd);
+		$key = array_rand($arr);
+		return $arr[$key];
+	}
 
 }

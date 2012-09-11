@@ -28,7 +28,7 @@ class Matchmaker_Scws
     if(empty($type)) {
       throw_exception("Load dictionary node: type is empty,get dic file Error");
     }
-    $dicpath = CONF_PATH."/dictionary/$type.txt";
+    $dicpath = CONF_PATH."/dictionary/$type";
     $rules = CONF_PATH.'/dictionary/rules.utf8.ini';
     scws_set_charset($obj,'utf8');
     scws_set_dict($obj,$dicpath,SCWS_XDICT_TXT);

@@ -43,7 +43,7 @@ class StreamController extends Yaf_Controller_abstract {
 		jsonReturn($this->_code,$this->_data);
 	}
 	
-	public function destoryAction()
+	public function destroyAction()
 	{
 		if(!empty($_GET['id']) && !empty($_GET['uid'])){
 			$this->_code = Common_Errorcode::SUCCESS;

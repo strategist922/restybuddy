@@ -1,11 +1,22 @@
 <?php
 
 
-class IndexController extends Yaf_Controller_Abstract {
-
-   public function indexAction()
-   {
-     exit("Welcome to Mis project");
-   }
+class IndexController extends AppBaseController {
+	
+	public function init() {
+		$this->_init();
+	}
+	
+	public function indexAction()
+	{
+		$this->assign('title','i am title');
+		$this->assign('body','i am  mis body');
+		$this->renderOut();
+	}
+	 
+	public function mainAction()
+	{
+		
+	}
 
 }

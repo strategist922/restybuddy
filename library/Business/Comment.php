@@ -50,24 +50,21 @@ class Business_Comment{
 
 	public function replyComment()
 	{
-			
-
+		$this->_params['reply'] = 1;
+		return $this->createComment();
 	}
 
 
 
 	public function destoryComment()
 	{
-		//$eventkey = K('event.stream');
-		//$this->_redis->lRem($eventkey,$this->_params['id']);
-		//del id in his keys
 		Sharding_Redis::delInKeys($this->_params['id']);
 		return true;
 	}
 
 	public function getComment()
 	{
-		$pageSize = 20;
+		$pageSize = 10;
 		$start = isset($this->_params['s']) ? $this->_params['s'] : 0;
 		$end = isset($this->_params['e']) ? $this->_params['e'] : $pageSize;
 		$start = ($start === 0) ? 0 : (($end * $start - $end == 0) ? 0 : $end * $start - $end );

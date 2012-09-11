@@ -36,7 +36,7 @@ class Common_Upyun
 	 */
 	public function putFile($path,$filename,$object='')
 	{
-		error_log($path."   ".$filename);
+		logTrace(__CLASS__.'/'.__METHOD__.': '.$path."   ".$filename);
 		$object = empty($object) ? $this->_params.'/' : $object.'/';
 		$postField = file_get_contents((realpath($path)));
 		$process = curl_init($this->_config['api'].'/'.$this->_config['bucketname'].'/'.$object.$filename);
@@ -48,7 +48,10 @@ class Common_Upyun
 		curl_setopt($process, CURLOPT_TIMEOUT, 30);
 		curl_setopt($process, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($process, CURLOPT_FOLLOWLOCATION, 1);
+		G('START');
 		$result = curl_exec($process);
+		logTrace("UPLOAD WASTTIME:".G('START','END'));
+		
 		$code = curl_getinfo($process, CURLINFO_HTTP_CODE);
 		curl_close($process);
 		if($code == 200) {

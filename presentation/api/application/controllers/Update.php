@@ -16,4 +16,5 @@ class UpdateController extends Yaf_Controller_abstract {
 		jsonReturn($this->_code,$this->_data);
 	}
 	
+	
 }

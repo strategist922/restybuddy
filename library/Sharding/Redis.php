@@ -68,6 +68,7 @@ class Sharding_Redis {
 						$redis->lRem($one,$id);
 						break;
 					case 'z:':
+					case 'i:':
 						$redis->zDelete($one,$id);
 					case 's:':
 						$redis->sRem($one,$id);			
@@ -181,7 +182,7 @@ class Sharding_Redis {
 			}
 			if(is_string($value)) {
 				$idStoreKey = K('key.keyset').':'.$value;
-				logTrace("idstore: $idStoreKey");
+				//logTrace("idstore: $idStoreKey");
 				$r->sAdd($idStoreKey, $objKey);
 			}
 			
