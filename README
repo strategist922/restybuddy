@@ -11,7 +11,9 @@ we use :
 openresty, is a good performance of nginx , it include so many modules with nginx. recommend.
 php, is many useful of web application development.
 lua, is a tiny program language.
-
+yaf, is a good performance and so lightly php framework.
+redis, is a good famous nosql database.
+sphinx, is a good performance search solution.
 
 how to do:
 0.download openresty from http://openresty.org ,then install it,second download php,then install it.
