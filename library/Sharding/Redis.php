@@ -1,7 +1,16 @@
 <?php
 /**
- * redis class
- * do redis sharding  ad ==> m1   account==> m2
+ * redis setting class
+ * redis the database is 0-16
+ * 
+ *  0 - s0
+ *  1 - s1
+ *  2 - s2
+ *  3 - s3
+ *  4 - s4
+ *  5 - s5
+ * 
+ *  do redis sharding  ad ==> m1   account==> m2
  */
 class Sharding_Redis {
 	static $_redis;
@@ -174,18 +183,20 @@ class Sharding_Redis {
 				logTrace("$key $val  REMOVE %s", $result);
 				break;
 		}
-		logTrace("objkey: $objKey ");
-		//@TODO need optimized
+        //log here
+        logTrace("REDIS:%s   %s",$objKey,json_encode($value));
+
 		if ($result && $labelStroe) {
 			if(is_array($value)) {
-				$value = $value['id'];
+                if(isset($value['id'])) {
+                    $value = $value['id'];
+                }
+
 			}
 			if(is_string($value)) {
 				$idStoreKey = K('key.keyset').':'.$value;
-				//logTrace("idstore: $idStoreKey");
 				$r->sAdd($idStoreKey, $objKey);
 			}
-			
 		}
 		return $result;
 	}
